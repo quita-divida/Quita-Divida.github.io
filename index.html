@@ -1216,7 +1216,7 @@ function enviarWhatsApp(nivel){
   const senha = admSenhaAtual[nivel];
   if(!senha) return;
   const nomes = {1:'Starter (R$9,90)',2:'Avançado (R$29,90)',3:'Completo (R$49,90)'};
-  const msg = encodeURIComponent(`Olá! Sou Ediwalter da Maximus Consultoria. 🎉 O acesso ao QUITA foi confirmado!\n\n✅ Nível: ${nomes[nivel]}\n🔑 Senha de acesso: *${senha}*\n\n📱 Acesse agora:\nhttps://quita-divida.github.io\n\nClique em "Já tenho senha", digite a senha acima e acesse seu conteúdo!\n\nQualquer dúvida estou à disposição. 🚀\n— Ediwalter | Maximus Consultoria`);
+  const msg = encodeURIComponent(`Olá! Messias da Maximus Consultoria. 🎉 Seu acesso ao QUITA foi confirmado!\n\n✅ Nível: ${nomes[nivel]}\n🔑 Sua senha de acesso: *${senha}*\n\n📱 Acesse agora:\nhttps://quita-divida.github.io\n\nClique em "Já tenho senha", digite a senha acima e acesse seu conteúdo!\n\nQualquer dúvida estou à disposição. 🚀\n— Messias | Maximus Consultoria`);
   window.open('https://wa.me/?text='+msg, '_blank');
 }
 
@@ -1250,7 +1250,7 @@ function selecionarNivel(nivel, valor) {
   document.getElementById('pix-nivel-nome').textContent = 'Nível ' + nivel + ' — ' + nomes[nivel];
   document.getElementById('pix-nivel-nome').style.color = cores[nivel];
   document.getElementById('pix-nivel-valor').textContent = 'R$ ' + valor.toFixed(2).replace('.', ',');
-  const msg = encodeURIComponent('Olá! Acabei de fazer o pagamento do QUITA Nível ' + nivel + ' — ' + nomes[nivel] + ' (R$ ' + valor.toFixed(2).replace('.', ',') + '). Segue o comprovante!');
+  const msg = encodeURIComponent('Olá! Acabei de fazer o pagamento do QUITA Nível ' + nivel + ' — ' + nomes[nivel] + ' (R$ ' + valor.toFixed(2).replace('.', ',') + '). Segue o comprovante! Meu nome: [seu nome]');
   document.getElementById('btn-whatsapp').href = 'https://wa.me/5583996941746?text=' + msg;
 }
 
