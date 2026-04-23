@@ -1402,6 +1402,55 @@ function _clearSession() {
   _sessionNivel = null;
 }
 
+// ══════ RATE LIMITING ══════
+const _RL = {
+  MAX_TRIES: 5,          // tentativas antes de bloquear
+  BLOCK_MS: 15 * 60 * 1000, // 15 minutos de bloqueio
+  WARN_AT: 3,            // avisar a partir da tentativa X
+  _key: 'quita_rl',
+
+  _load(){
+    try { return JSON.parse(localStorage.getItem(this._key)) || {tries:0,blockedUntil:0}; }
+    catch(e){ return {tries:0,blockedUntil:0}; }
+  },
+  _save(state){
+    try { localStorage.setItem(this._key, JSON.stringify(state)); } catch(e){}
+  },
+
+  isBlocked(){
+    const s = this._load();
+    if(s.blockedUntil && Date.now() < s.blockedUntil) return s.blockedUntil;
+    // Bloqueio expirou — resetar
+    if(s.blockedUntil && Date.now() >= s.blockedUntil){ this._save({tries:0,blockedUntil:0}); }
+    return false;
+  },
+
+  recordFail(){
+    const s = this._load();
+    s.tries = (s.tries || 0) + 1;
+    if(s.tries >= this.MAX_TRIES){
+      s.blockedUntil = Date.now() + this.BLOCK_MS;
+      s.tries = 0;
+    }
+    this._save(s);
+    return s;
+  },
+
+  recordSuccess(){
+    this._save({tries:0,blockedUntil:0});
+  },
+
+  remaining(){
+    return Math.max(0, this.MAX_TRIES - (this._load().tries || 0));
+  },
+
+  timeLeft(blockedUntil){
+    const ms = blockedUntil - Date.now();
+    const min = Math.ceil(ms / 60000);
+    return min + ' minuto' + (min !== 1 ? 's' : '');
+  }
+};
+
 // ══════ LOGIN HELPERS ══════
 function showTab(t){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -1411,25 +1460,75 @@ function showTab(t){
 }
 
 async function verificarSenha(){
-  const v=document.getElementById('senha-input').value.trim().toUpperCase();
-  const msg=document.getElementById('msg-acesso');
-  // Hash SHA-256 da senha digitada
+  const msg = document.getElementById('msg-acesso');
+  const input = document.getElementById('senha-input');
+  const btn = document.querySelector('.access-submit');
+
+  // ── Verificar bloqueio ──
+  const blockedUntil = _RL.isBlocked();
+  if(blockedUntil){
+    msg.style.color='#fb7185';
+    msg.textContent=`🔒 Muitas tentativas. Aguarde ${_RL.timeLeft(blockedUntil)} para tentar novamente.`;
+    input.disabled = true;
+    if(btn) btn.disabled = true;
+    // Atualizar countdown a cada segundo
+    _RL._countdownInterval && clearInterval(_RL._countdownInterval);
+    _RL._countdownInterval = setInterval(()=>{
+      const still = _RL.isBlocked();
+      if(!still){
+        clearInterval(_RL._countdownInterval);
+        msg.textContent='';
+        input.disabled = false;
+        if(btn){ btn.disabled = false; btn.textContent='Acessar'; }
+      } else {
+        msg.textContent=`🔒 Muitas tentativas. Aguarde ${_RL.timeLeft(still)} para tentar novamente.`;
+      }
+    }, 1000);
+    return;
+  }
+
+  const v = input.value.trim().toUpperCase();
+  if(!v){ msg.style.color='#fb7185'; msg.textContent='Digite sua senha de acesso.'; return; }
+
+  // ── Desabilitar botão durante verificação ──
+  if(btn){ btn.disabled = true; btn.textContent='Verificando...'; }
+
+  // Delay artificial mínimo (dificulta timing attacks)
+  await new Promise(r => setTimeout(r, 400 + Math.random() * 200));
+
   const encoder = new TextEncoder();
-  const data = encoder.encode(v);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(v));
+  const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+
   if(senhasHash[hashHex]){
+    _RL.recordSuccess();
     const nivel = senhasHash[hashHex];
     _setSession(nivel);
     msg.style.color='#00e87a';
     msg.textContent='✓ Senha válida! Carregando seu conteúdo...';
-    setTimeout(()=>abrirApp(nivel),700);
+    if(btn){ btn.disabled = true; btn.textContent='Carregando...'; }
+    setTimeout(()=>abrirApp(nivel), 700);
   } else {
-    msg.style.color='#fb7185';
-    msg.textContent='✗ Senha inválida. Verifique e tente novamente.';
-    document.getElementById('senha-input').classList.add('shake');
-    setTimeout(()=>document.getElementById('senha-input').classList.remove('shake'),500);
+    const state = _RL.recordFail();
+    input.classList.add('shake');
+    setTimeout(()=>input.classList.remove('shake'), 500);
+    if(btn){ btn.disabled = false; btn.textContent='Acessar'; }
+
+    // Verificar se acabou de bloquear
+    const nowBlocked = _RL.isBlocked();
+    if(nowBlocked){
+      msg.style.color='#fb7185';
+      msg.textContent=`🔒 Conta bloqueada por ${_RL.timeLeft(nowBlocked)} após muitas tentativas.`;
+      input.disabled = true;
+      if(btn) btn.disabled = true;
+    } else {
+      const left = _RL.remaining();
+      const warn = left <= _RL.WARN_AT;
+      msg.style.color = warn ? '#f59e0b' : '#fb7185';
+      msg.textContent = warn
+        ? `✗ Senha inválida. Restam ${left} tentativa${left!==1?'s':''} antes do bloqueio.`
+        : `✗ Senha inválida. Verifique e tente novamente.`;
+    }
   }
 }
 
