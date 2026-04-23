@@ -238,7 +238,7 @@ nav {
 }
 
 /* ===== PROBLEMA ===== */
-.section { padding: 80px 32px; max-width:960px; margin:0 auto; }
+.section { padding: 80px 32px; max-width:960px; margin:0 auto; scroll-margin-top: 80px; }
 
 .sec-label {
   font-size:11px; letter-spacing:3px; text-transform:uppercase;
@@ -277,7 +277,7 @@ h2 em { color:var(--verde); font-style:normal; }
   border-bottom:1px solid var(--border);
   padding: 80px 32px;
 }
-.levels-inner { max-width:960px; margin:0 auto; }
+.levels-inner { max-width:960px; margin:0 auto; scroll-margin-top: 80px; }
 
 .levels-grid {
   display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -398,7 +398,7 @@ h2 em { color:var(--verde); font-style:normal; }
   border-bottom:1px solid var(--border);
   padding: 80px 32px;
 }
-.access-inner { max-width:500px; margin:0 auto; text-align:center; }
+.access-inner { max-width:500px; margin:0 auto; text-align:center; scroll-margin-top: 80px; }
 
 .access-icon {
   font-size:56px; margin-bottom:20px; display:block;
@@ -1206,10 +1206,9 @@ function renderLog(){
 function copiarSenhaAdmin(nivel){
   const senha = admSenhaAtual[nivel];
   if(!senha) return;
-  navigator.clipboard.writeText(senha).then(()=>{
-    const btns = document.querySelectorAll(`#adm-res-${nivel} .adm-copy-btn`);
-    btns.forEach(b=>{const o=b.textContent;b.textContent='✓ Copiado!';setTimeout(()=>b.textContent=o,2000);});
-  });
+  const _cb=()=>{const btns=document.querySelectorAll(`#adm-res-${nivel} .adm-copy-btn`);btns.forEach(b=>{const o=b.textContent;b.textContent='✓ Copiado!';setTimeout(()=>b.textContent=o,2000);});};
+  if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(senha).then(_cb).catch(()=>_clipFallback(senha,_cb)); }
+  else{ _clipFallback(senha,_cb); }
 }
 
 function enviarWhatsApp(nivel){
@@ -1255,12 +1254,9 @@ function selecionarNivel(nivel, valor) {
 }
 
 function copiarChavePix() {
-  navigator.clipboard.writeText('65.026.508/0001-04').then(() => {
-    const btn = document.getElementById('btn-copiar-pix');
-    const orig = btn.textContent;
-    btn.textContent = '✓ Copiado!';
-    setTimeout(() => btn.textContent = orig, 2000);
-  });
+  const _pc=()=>{const btn=document.getElementById('btn-copiar-pix');if(!btn)return;const orig=btn.textContent;btn.textContent='✓ Copiado!';setTimeout(()=>btn.textContent=orig,2000);};
+  if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText('65.026.508/0001-04').then(_pc).catch(()=>_clipFallback('65.026.508/0001-04',_pc)); }
+  else{ _clipFallback('65.026.508/0001-04',_pc); }
 }
 </script>
 
@@ -1376,6 +1372,36 @@ const senhasHash = {
   "e2083417af34d5b6982f02ef32a3a8b9fcf61fe52ed4b62bc6677a2c622f8b79":3
 };
 
+// ══════ PROTEÇÃO DE CONTEÚDO ══════
+// Token de sessão gerado em runtime — impede acesso direto via console
+let _sessionToken = null;
+let _sessionNivel = null;
+
+function _setSession(nivel) {
+  // Token aleatório de 32 bytes, vinculado ao nível e timestamp
+  const arr = new Uint8Array(16);
+  crypto.getRandomValues(arr);
+  _sessionToken = Array.from(arr).map(b => b.toString(16).padStart(2,'0')).join('') + '.' + nivel + '.' + Date.now();
+  _sessionNivel = nivel;
+}
+
+function _checkSession(nivel) {
+  if (!_sessionToken || !_sessionNivel) return false;
+  const parts = _sessionToken.split('.');
+  if (parts.length < 3) return false;
+  const tokenNivel = parseInt(parts[1]);
+  const tokenTime = parseInt(parts[2]);
+  // Token válido por 8 horas
+  if (Date.now() - tokenTime > 8 * 60 * 60 * 1000) { _sessionToken = null; _sessionNivel = null; return false; }
+  // Verificar que nível solicitado é <= nível autorizado (N3 inclui N1 e N2)
+  return tokenNivel >= nivel;
+}
+
+function _clearSession() {
+  _sessionToken = null;
+  _sessionNivel = null;
+}
+
 // ══════ LOGIN HELPERS ══════
 function showTab(t){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -1395,8 +1421,7 @@ async function verificarSenha(){
   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   if(senhasHash[hashHex]){
     const nivel = senhasHash[hashHex];
-    localStorage.setItem('quita_nivel', nivel);
-    localStorage.setItem('quita_senha', v);
+    _setSession(nivel);
     msg.style.color='#00e87a';
     msg.textContent='✓ Senha válida! Carregando seu conteúdo...';
     setTimeout(()=>abrirApp(nivel),700);
@@ -1409,8 +1434,7 @@ async function verificarSenha(){
 }
 
 function logout(){
-  localStorage.removeItem('quita_nivel');
-  localStorage.removeItem('quita_senha');
+  _clearSession();
   document.getElementById('app-aluno').style.display='none';
   document.getElementById('app-aluno').innerHTML='';
   // Restore landing nav
@@ -1419,6 +1443,7 @@ function logout(){
 }
 
 function abrirApp(nivel){
+  if(!_checkSession(nivel)) { console.warn('Acesso negado.'); return; }
   const app=document.getElementById('app-aluno');
   app.style.display='block';
   app.innerHTML=gerarNivel(nivel);
@@ -1432,11 +1457,8 @@ function abrirApp(nivel){
   if(nivel===3) initN3();
 }
 
-// Limpa sessão anterior ao carregar — landing page sempre aparece primeiro
-window.addEventListener('load',()=>{
-  localStorage.removeItem('quita_nivel');
-  localStorage.removeItem('quita_senha');
-});
+// Sessão em memória — limpa automaticamente ao recarregar a página (token não persiste)
+// window.addEventListener('load') — nenhuma ação necessária, _sessionToken inicia como null
 
 // Shake animation
 const shakeStyle=document.createElement('style');
@@ -1461,6 +1483,7 @@ function videoYT(id, titulo, canal){
   </div>`;
 }
 function gerarNivel(nivel){
+  if(!_checkSession(nivel)) { return '<div style="color:#fb7185;padding:40px;text-align:center">Sessão inválida. <a href="javascript:logout()" style="color:#00e87a">Voltar</a></div>'; }
   const appCSS = `
 <style>
 :root{
@@ -2414,8 +2437,9 @@ const n3ModContent=[
     <div class="acc-card"><div class="acc-lbl">Meses em atraso</div><input class="acc-inp" type="number" id="c0-meses" value="18" oninput="calcN3Div()"></div>
     <div class="acc-card"><div class="acc-lbl">Juros ao mês (%)</div><input class="acc-inp" type="number" id="c0-juros" value="9.5" oninput="calcN3Div()"></div>
     <div class="acc-card"><div class="acc-lbl">Valor estimado hoje</div><div class="acc-val" style="color:#f5a623" id="c0-hoje">...</div></div>
-    <div class="acc-card"><div class="acc-lbl">Oferta sugerida (50%)</div><div class="acc-val" id="c0-oferta">...</div></div>
+    <div class="acc-card"><div class="acc-lbl">Oferta estimada (40–70%)</div><div class="acc-val" id="c0-oferta">...</div></div>
     <div class="acc-card"><div class="acc-lbl">Economia potencial</div><div class="acc-val" style="color:#4ade80" id="c0-econ">...</div></div>
+    <div id="c0-aviso" style="display:none;margin-top:10px;font-size:11px;color:#7A8C7A;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:8px 12px;">⚠️ Estimativa com base em juros compostos. O desconto real varia por credor, tipo de dívida e estratégia de negociação (tipicamente 40–70%).</div>
   </div>`,
   // MOD 1: Direitos
   `<div class="yvideo-wrap"><div class="yvideo-header"><span class="yvideo-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>YouTube</span><span class="yvideo-canal">Consumidor Endividado</span></div><div class="yvideo-title">8 Direitos do Devedor — Consumidor Endividado</div><div class="yvideo-frame"><iframe src="https://www.youtube.com/embed/of0PslvT808?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe></div></div><div class="aintro"><div class="aintro-eye" style="color:#f5a623">Módulo 02 · Direitos</div><div class="aintro-title">Ser devedor não significa abrir mão dos seus direitos</div><div class="aintro-desc">O CDC protege você contra cobranças abusivas, juros excessivos e negativação indevida — independente do valor da dívida ou tempo em atraso.</div></div>
@@ -2663,25 +2687,29 @@ function n3showSection(id, ev){
       </div>`).join('');
   }
   if(id==='n2plan'){
-    n3RenderPlan();
+    n3LoadStorage(); n3RenderPlan();
   }
 }
 
-// N3 planilha
+// N3 planilha — com persistência em localStorage
 let n3Linhas=[];
+function n3SaveStorage(){ try{ localStorage.setItem('quita_plan', JSON.stringify(n3Linhas)); }catch(e){} }
+function n3LoadStorage(){ try{ const d=localStorage.getItem('quita_plan'); if(d) n3Linhas=JSON.parse(d); }catch(e){} }
 function n3AddLinha(){
   n3Linhas.push({id:Date.now(),credor:'',valor:'',tipo:'Cartão de crédito',meses:'',prio:'Alta',desc:'70%',status:'Não iniciado'});
-  n3RenderPlan();
+  n3RenderPlan(); n3SaveStorage();
 }
-function n3DelLinha(id){n3Linhas=n3Linhas.filter(l=>l.id!==id);n3RenderPlan();}
-function n3UpdPlan(id,f,v){const l=n3Linhas.find(l=>l.id===id);if(l){l[f]=v;n3CalcStats();}}
+function n3DelLinha(id){n3Linhas=n3Linhas.filter(l=>l.id!==id);n3RenderPlan();n3SaveStorage();}
+function n3UpdPlan(id,f,v){const l=n3Linhas.find(l=>l.id===id);if(l){l[f]=v;n3CalcStats();n3SaveStorage();}}
 function n3RenderPlan(){
   const tb=document.getElementById('n3-ptbody');if(!tb)return;
+  // Sanitizar strings antes de inserir em atributos HTML (previne XSS)
+  const _esc = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   tb.innerHTML=n3Linhas.map(l=>`<tr>
-    <td><input value="${l.credor}" placeholder="Ex: Nubank" oninput="n3UpdPlan(${l.id},'credor',this.value)"></td>
-    <td><input type="number" value="${l.valor}" placeholder="0" oninput="n3UpdPlan(${l.id},'valor',this.value)"></td>
+    <td><input value="${_esc(l.credor)}" placeholder="Ex: Nubank" oninput="n3UpdPlan(${l.id},'credor',this.value)"></td>
+    <td><input type="number" value="${_esc(l.valor)}" placeholder="0" oninput="n3UpdPlan(${l.id},'valor',this.value)"></td>
     <td><select onchange="n3UpdPlan(${l.id},'tipo',this.value)">${pTipos.map(t=>`<option${t===l.tipo?' selected':''}>${t}</option>`).join('')}</select></td>
-    <td><input type="number" value="${l.meses}" placeholder="0" oninput="n3UpdPlan(${l.id},'meses',this.value)"></td>
+    <td><input type="number" value="${_esc(l.meses)}" placeholder="0" oninput="n3UpdPlan(${l.id},'meses',this.value)"></td>
     <td><select onchange="n3UpdPlan(${l.id},'prio',this.value)">${pPrios.map(p=>`<option${p===l.prio?' selected':''}>${p}</option>`).join('')}</select></td>
     <td><select onchange="n3UpdPlan(${l.id},'desc',this.value)">${pDescs.map(d=>`<option${d===l.desc?' selected':''}>${d}</option>`).join('')}</select></td>
     <td><select onchange="n3UpdPlan(${l.id},'status',this.value)">${pStats.map(s=>`<option${s===l.status?' selected':''}>${s}</option>`).join('')}</select></td>
@@ -2705,7 +2733,14 @@ function calcN3Div(){
   const hoje=v*Math.pow(1+j,m);
   const fmt=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
   const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
-  set('c0-hoje',fmt(hoje));set('c0-oferta',fmt(hoje*.5));set('c0-econ',fmt(hoje*.5));
+  set('c0-hoje',fmt(hoje));
+  // Oferta estimada: 50% para cartão/banco, mas exibir range realista
+  const ofertaMin=hoje*0.40, ofertaMax=hoje*0.70;
+  set('c0-oferta',fmt(ofertaMin)+' – '+fmt(ofertaMax));
+  set('c0-econ',fmt(hoje-ofertaMin)+' – '+fmt(hoje-ofertaMax));
+  // Aviso sobre estimativa
+  const av=document.getElementById('c0-aviso');
+  if(av) av.style.display = hoje>0 ? 'block' : 'none';
 }
 
 function calcN3Budget(){
@@ -2724,14 +2759,26 @@ function fmtBox(txt,color){
 }
 
 function cpTxt(txt,btnId){
-  navigator.clipboard.writeText(txt).then(()=>{
+  const _done=()=>{
     const b=document.getElementById(btnId);
     if(!b)return;
     const orig=b.innerHTML;
     b.innerHTML=`<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Copiado!`;
     b.classList.add('ok');
     setTimeout(()=>{b.innerHTML=orig;b.classList.remove('ok');},2000);
-  });
+  };
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(txt).then(_done).catch(()=>_clipFallback(txt,_done));
+  } else {
+    _clipFallback(txt,_done);
+  }
+}
+function _clipFallback(txt,cb){
+  const ta=document.createElement('textarea');
+  ta.value=txt; ta.style.cssText='position:fixed;left:-9999px;top:-9999px;opacity:0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); if(cb)cb(); }catch(e){}
+  document.body.removeChild(ta);
 }
 
 function cpTxtRaw(txt,btnId){
