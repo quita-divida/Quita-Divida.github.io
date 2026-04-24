@@ -1144,6 +1144,22 @@ footer a:hover { color:var(--verde); }
       </div>
     </div>
 
+    <!-- REVOGAR ACESSO POR REEMBOLSO -->
+    <div class="adm-section" style="border:1px solid rgba(255,82,82,0.25);border-radius:14px;padding:20px;margin-top:8px;">
+      <div class="adm-sec-title" style="color:#ff5252;">🚫 REVOGAR ACESSO — REEMBOLSO</div>
+      <p style="font-size:13px;color:#666;margin-bottom:16px;">Digite a senha do cliente que pediu reembolso para bloqueá-la permanentemente.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <input type="text" id="adm-revoke-input" placeholder="Ex: N1-RDWV-HYAZ-MVOJ" style="flex:1;min-width:220px;padding:12px 16px;background:#0a0a0a;border:1px solid rgba(255,82,82,0.3);color:#fff;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+        <button onclick="revogarSenha()" style="background:#ff5252;color:#fff;border:none;padding:12px 24px;border-radius:100px;font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;cursor:pointer;white-space:nowrap;">🚫 Bloquear senha</button>
+      </div>
+      <div id="adm-revoke-msg" style="margin-top:12px;font-size:13px;min-height:20px;"></div>
+      <!-- Lista de senhas bloqueadas -->
+      <div style="margin-top:20px;">
+        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#444;font-weight:700;margin-bottom:10px;">SENHAS BLOQUEADAS</div>
+        <div id="adm-blocked-list" style="font-size:12px;color:#555;font-family:monospace;max-height:150px;overflow-y:auto;"></div>
+      </div>
+    </div>
+
     <!-- Histórico -->
     <div class="adm-section">
       <div class="adm-sec-title" style="color:#666;">HISTÓRICO DE SENHAS GERADAS</div>
@@ -1180,6 +1196,7 @@ async function admLogin(){
     admIdx[2] = parseInt(localStorage.getItem('adm_idx_n2')||'0');
     admIdx[3] = parseInt(localStorage.getItem('adm_idx_n3')||'0');
     atualizarContadores();
+    setTimeout(renderBlockedList, 100);
   } else {
     document.getElementById('adm-login-err').style.display='block';
   }
@@ -1242,6 +1259,41 @@ function enviarWhatsApp(nivel){
 
 function fecharAdmin(){
   document.getElementById('pagina-admin').style.display='none';
+}
+
+// REVOGAR SENHA (REEMBOLSO)
+const BLOCKED_KEY = 'quita_blocked_hashes';
+function _loadBlocked(){ try{ return JSON.parse(localStorage.getItem(BLOCKED_KEY))||{}; }catch(e){ return {}; } }
+function _saveBlocked(obj){ try{ localStorage.setItem(BLOCKED_KEY, JSON.stringify(obj)); }catch(e){} }
+
+async function revogarSenha(){
+  const input = document.getElementById('adm-revoke-input');
+  const msg = document.getElementById('adm-revoke-msg');
+  const senha = input.value.trim().toUpperCase();
+  if(!senha){ msg.style.color='#fb7185'; msg.textContent='Digite a senha do cliente.'; return; }
+  const encoder = new TextEncoder();
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(senha));
+  const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(!senhasHash[hashHex]){ msg.style.color='#fb7185'; msg.textContent='Senha nao encontrada. Verifique se digitou corretamente.'; return; }
+  const blocked = _loadBlocked();
+  if(blocked[hashHex]){ msg.style.color='#f59e0b'; msg.textContent='Esta senha ja estava bloqueada.'; return; }
+  const nivel = senhasHash[hashHex];
+  const nomes = {1:'Starter',2:'Avancado',3:'Completo'};
+  blocked[hashHex] = { senha, nivel, nome: nomes[nivel], data: new Date().toLocaleString('pt-BR') };
+  _saveBlocked(blocked);
+  msg.style.color='#00e87a';
+  msg.textContent='Senha bloqueada com sucesso: ' + senha + ' (N'+nivel+' - '+nomes[nivel]+')';
+  input.value='';
+  renderBlockedList();
+}
+
+function renderBlockedList(){
+  const el = document.getElementById('adm-blocked-list');
+  if(!el) return;
+  const blocked = _loadBlocked();
+  const entries = Object.values(blocked);
+  if(entries.length===0){ el.innerHTML='<div style="color:#333;">Nenhuma senha bloqueada.</div>'; return; }
+  el.innerHTML = entries.map(b=>'<div style="padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;gap:8px;"><span style="color:#ff5252;">'+b.senha+'</span><span style="color:#444;">N'+b.nivel+' - '+b.data+'</span></div>').join('');
 }
 
 // Detectar acesso via #admin na URL
@@ -1509,7 +1561,9 @@ async function verificarSenha(){
   const hashBuffer = await crypto.subtle.digest('SHA-256', encoder.encode(v));
   const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
 
-  if(senhasHash[hashHex]){
+  const _blocked = _loadBlocked ? _loadBlocked() : {};
+  const _isBlocked = _blocked[hashHex];
+  if(senhasHash[hashHex] && !_isBlocked){
     _RL.recordSuccess();
     const nivel = senhasHash[hashHex];
     _setSession(nivel);
@@ -1524,6 +1578,13 @@ async function verificarSenha(){
     if(btn){ btn.disabled = false; btn.textContent='Acessar'; }
 
     // Verificar se acabou de bloquear
+    // Check if blocked by admin (reembolso)
+    if(_isBlocked){
+      msg.style.color='#fb7185';
+      msg.textContent='Acesso revogado. Entre em contato com o suporte.';
+      if(btn){ btn.disabled=false; btn.textContent='Acessar'; }
+      return;
+    }
     const nowBlocked = _RL.isBlocked();
     if(nowBlocked){
       msg.style.color='#fb7185';
