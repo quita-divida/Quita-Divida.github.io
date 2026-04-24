@@ -931,37 +931,61 @@ footer a:hover { color:var(--verde); }
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <h3>Acesse e aplique</h3>
-      <p>Você recebe a senha por e-mail e acessa todo o conteúdo aqui mesmo.</p>
+      <h3>Acesse na hora</h3>
+      <p>A Kiwify cria seu login automaticamente e envia por e-mail. Acesse a qualquer hora, em qualquer dispositivo.</p>
     </div>
   </div>
 </div>
 
-<!-- ACESSO COM SENHA -->
-
-<!-- ACESSO COM SENHA -->
+<!-- COMO ACESSAR -->
 <div class="access-wrap" id="acesso">
   <div class="access-inner">
-    <span class="access-icon">🔐</span>
-    <h2>Área de <em>Acesso</em></h2>
-    <p>Já tem acesso? Digite sua senha abaixo para entrar no método completo.</p>
-    <div class="access-box">
-      <div class="access-tabs">
-        <button class="tab-btn active" onclick="showTab('login')">Já tenho senha</button>
-        <button class="tab-btn" onclick="showTab('comprar')">Quero comprar</button>
-      </div>
-      <div class="tab-content active" id="tab-login">
-        <div class="input-group">
-          <label>Sua senha de acesso</label>
-          <input type="password" id="senha-input" placeholder="Digite sua senha aqui..." onkeypress="if(event.key==='Enter')verificarSenha()">
+    <span class="access-icon">📱</span>
+    <h2>Como <em>acessar</em></h2>
+    <p>Após a compra, a Kiwify cuida de tudo automaticamente. Veja como é simples:</p>
+    <div class="access-box" style="text-align:left;">
+
+      <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:28px;">
+
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:var(--dark4);border-radius:12px;border:1px solid var(--border);">
+          <div style="min-width:36px;height:36px;background:var(--verde-dim);border:1px solid rgba(0,200,83,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--verde);">1</div>
+          <div>
+            <div style="font-weight:800;font-size:14px;margin-bottom:4px;">Compre com Pix ou cartão</div>
+            <div style="font-size:13px;color:var(--muted);">Checkout 100% seguro pela Kiwify. Aprovação na hora.</div>
+          </div>
         </div>
-        <button class="access-submit" onclick="verificarSenha()">🔓 Acessar conteúdo</button>
-        <div class="access-msg" id="msg-acesso"></div>
+
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:var(--dark4);border-radius:12px;border:1px solid var(--border);">
+          <div style="min-width:36px;height:36px;background:var(--verde-dim);border:1px solid rgba(0,200,83,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--verde);">2</div>
+          <div>
+            <div style="font-weight:800;font-size:14px;margin-bottom:4px;">Receba o acesso por e-mail</div>
+            <div style="font-size:13px;color:var(--muted);">A Kiwify cria seu login automaticamente e envia os dados de acesso para o seu e-mail em segundos.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:var(--dark4);border-radius:12px;border:1px solid var(--border);">
+          <div style="min-width:36px;height:36px;background:var(--verde-dim);border:1px solid rgba(0,200,83,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--verde);">3</div>
+          <div>
+            <div style="font-weight:800;font-size:14px;margin-bottom:4px;">Acesse o conteúdo completo</div>
+            <div style="font-size:13px;color:var(--muted);">Entre na Área de Membros com seu login. Todo o conteúdo liberado na hora, em qualquer dispositivo.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:16px;background:rgba(0,200,83,0.04);border-radius:12px;border:1px solid rgba(0,200,83,0.2);">
+          <div style="font-size:24px;">🛡️</div>
+          <div>
+            <div style="font-weight:800;font-size:14px;margin-bottom:4px;color:var(--verde);">Garantia de 7 dias</div>
+            <div style="font-size:13px;color:var(--muted);">Não ficou satisfeito? A Kiwify reembolsa 100% do seu dinheiro automaticamente — e o acesso é encerrado na hora.</div>
+          </div>
+        </div>
+
       </div>
-      <div class="tab-content" id="tab-comprar">
-        <p style="font-size:14px;color:var(--muted);margin-bottom:20px;text-align:left;">Clique abaixo para acessar o checkout seguro da Kiwify e pagar com Pix ou cartão. A senha chega por e-mail automaticamente após a confirmação.</p>
-        <a href="https://pay.kiwify.com.br/s1az0EA" target="_blank" rel="noopener" class="access-submit" style="display:block;text-decoration:none;text-align:center;">Comprar agora — R$ 37 →</a>
-      </div>
+
+      <a href="https://pay.kiwify.com.br/s1az0EA" target="_blank" rel="noopener" class="access-submit" style="display:block;text-decoration:none;text-align:center;padding:18px;font-size:16px;">
+        🚀 Comprar agora — R$ 37
+      </a>
+      <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:12px;">Já é aluno? Acesse sua área de membros pelo link recebido no e-mail.</p>
+
     </div>
   </div>
 </div>
