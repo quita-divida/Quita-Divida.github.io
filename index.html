@@ -2076,10 +2076,10 @@ function gerarN3(){
     <div class="asb-top">
       <div class="asb-logo"><div class="asb-mark" style="background:linear-gradient(135deg,#f5a623,#fbbf4a);box-shadow:0 0 22px rgba(245,166,35,0.4)">Q</div><span class="asb-name">QUITA</span></div>
       <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
-        <div class="asb-chip" style="background:rgba(245,166,35,0.09);border-color:rgba(245,166,35,0.25);flex:1">
-          <span style="font-size:12px;animation:spin 4s linear infinite;display:inline-block">✦</span>
-          <span class="asb-chip-txt" style="color:#fbbf4a">Nível 3 — Completo</span>
-          <span class="asb-chip-bdg" style="background:linear-gradient(135deg,#f5a623,#fbbf4a);color:#000">ELITE</span>
+        <div class="asb-chip" style="background:rgba(0,200,83,0.09);border-color:rgba(0,200,83,0.25);flex:1">
+          <div style="width:6px;height:6px;border-radius:50%;background:#00c853;animation:blink 2s infinite"></div>
+          <span class="asb-chip-txt" style="color:#00c853">Acesso Completo</span>
+          <span class="asb-chip-bdg" style="background:#00c853;color:#000">ATIVO</span>
         </div>
         <button class="mob-menu-btn" onclick="toggleMobNav()" aria-label="Menu">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
@@ -2087,16 +2087,13 @@ function gerarN3(){
       </div>
     </div>
     <div class="asb-nav">
-      <div class="asb-lbl">Nível 1 — Starter</div>
+      <div class="asb-lbl">6 Módulos do Método</div>
+      ${[['🔍','Módulo 1 — Diagnóstico'],['⚖️','Módulo 2 — Direitos'],['🎯','Módulo 3 — Estratégia'],['🧹','Módulo 4 — Serasa'],['📊','Módulo 5 — Finanças'],['🚀','Módulo 6 — Crédito']].map((m,i)=>`<a href="#" class="asb-a n3nav" onclick="n3mod(${i},event)" style="${i===0?'background:rgba(245,166,35,0.09);color:#fbbf4a':''}">${m[0]} ${m[1]}</a>`).join('')}
+      <div class="asb-sep"></div>
+      <div class="asb-lbl">Bônus incluídos</div>
       <a href="#" class="asb-a" onclick="n3showSection('n1',event)" style="color:var(--text3)">
         <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-        10 Prompts básicos
-      </a>
-      <div class="asb-sep"></div>
-      <div class="asb-lbl">Nível 2 — Avançado</div>
-      <a href="#" class="asb-a" onclick="n3showSection('n2prompts',event)" style="color:var(--text3)">
-        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
-        30 Prompts avançados
+        40 Prompts prontos
       </a>
       <a href="#" class="asb-a" onclick="n3showSection('n2scripts',event)" style="color:var(--text3)">
         <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -2111,23 +2108,22 @@ function gerarN3(){
         Planilha de dívidas
       </a>
       <div class="asb-sep"></div>
-      <div class="asb-lbl">Nível 3 — Completo</div>
-      ${[['🔍','Módulo 1 — Diagnóstico'],['⚖️','Módulo 2 — Direitos'],['🎯','Módulo 3 — Estratégia'],['🧹','Módulo 4 — Serasa'],['📊','Módulo 5 — Finanças'],['🚀','Módulo 6 — Crédito']].map((m,i)=>`<a href="#" class="asb-a n3nav" onclick="n3mod(${i},event)" style="${i===0?'background:rgba(245,166,35,0.09);color:#fbbf4a':''}">${m[0]} ${m[1]}</a>`).join('')}
-      <div class="asb-sep"></div>
       <div style="padding:0 10px;margin-bottom:8px">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:6px;display:flex;justify-content:space-between"><span>Progresso N3</span><span id="n3pct">0%</span></div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:6px;display:flex;justify-content:space-between"><span>Seu progresso</span><span id="n3pct">0%</span></div>
         <div style="height:3px;background:var(--bg5);border-radius:2px;overflow:hidden"><div id="n3progbar" style="height:100%;background:linear-gradient(90deg,#f5a623,#fbbf4a);border-radius:2px;width:0%;transition:width .8s"></div></div>
       </div>
-      <a href="#" class="asb-a" onclick="logout();return false;" style="color:var(--text3);border-top:1px solid var(--border);padding-top:12px"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12h18M3 12l6-6M3 12l6 6"/></svg> ← Página inicial</a>
+      <a href="#" class="asb-a" onclick="logout();return false;" style="color:var(--text3);border-top:1px solid var(--border);padding-top:12px">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 12h18M3 12l6-6M3 12l6 6"/></svg> ← Página inicial
+      </a>
     </div>
-    <div class="asb-foot"><div class="asb-user"><div class="asb-av">A</div><div><div class="asb-uname">Aluno</div><div class="asb-ulvl">Nível 3 · Elite</div></div><button class="asb-exit" onclick="logout()"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button></div></div>
+    <div class="asb-foot"><div class="asb-user"><div class="asb-av">A</div><div><div class="asb-uname">Aluno</div><div class="asb-ulvl">Acesso Completo ✓</div></div><button class="asb-exit" onclick="logout()"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button></div></div>
   </div>
   <div class="amain">
 
     <div class="acont">
-      <div class="ahero"><div class="ahero-eye" style="color:#fbbf4a"><div class="ahero-dot" style="background:#fbbf4a"></div>Nível 3 · Completo · Elite</div>
-        <h1 class="ahero-h1">O método completo.<br><span style="background:linear-gradient(90deg,#f5a623,#fcd97a);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Do diagnóstico ao crédito reconstruído.</span></h1>
-        <p class="ahero-p">6 módulos com prompts avançados, direitos pelo CDC, estratégia por tipo de dívida, planejamento financeiro e reconstrução do crédito.</p>
+      <div class="ahero"><div class="ahero-eye" style="color:#00c853"><div class="ahero-dot" style="background:#00c853"></div>Método Completo · Acesso Total</div>
+        <h1 class="ahero-h1">Negocie suas dívidas<br><span style="color:#00c853">com Inteligência Artificial.</span></h1>
+        <p class="ahero-p">6 módulos completos com prompts avançados, scripts por credor, planilha, seus direitos pelo CDC e reconstrução de crédito do zero.</p>
       </div>
       <div class="amod-grid a2">
         ${[['01','🔍','Diagnóstico com IA','Mapeie antes de agir'],['02','⚖️','Seus Direitos','CDC, prescrição, Procon'],['03','🎯','Estratégia por dívida','Carro, imóvel, pessoa física'],['04','🧹','Limpando o Nome','Serasa do jeito certo'],['05','📊','Finanças pós-quitação','Nunca mais se endividar'],['06','🚀','Crédito do zero','Score alto em 6 meses']].map((m,i)=>`
@@ -2142,24 +2138,24 @@ function gerarN3(){
       ${[0,1,2,3,4,5].map(i=>`<div class="amod-panel ${i===0?'active':''}" id="n3mod-${i}"><div id="n3mod-body-${i}"></div></div>`).join('')}
       <!-- N1 section -->
       <div class="amod-panel" id="n3sec-n1">
-        <div class="aintro" style="border-color:rgba(0,232,122,0.2)"><div class="aintro-eye" style="color:#00e87a">Nível 1 · Incluído</div><div class="aintro-title">10 Prompts Básicos de Negociação</div><div class="aintro-desc">Os 10 prompts do Nível 1 estão incluídos na sua assinatura Completa.</div></div>
+        <div class="aintro" style="border-color:rgba(0,232,122,0.2)"><div class="aintro-eye" style="color:#00c853">✦ Bônus Incluído</div><div class="aintro-title">40 Prompts Prontos de Negociação</div><div class="aintro-desc">Todos os prompts prontos para usar no ChatGPT agora mesmo.</div></div>
         <div id="n3-n1-prompts"></div>
       </div>
       <!-- N2 sections -->
       <div class="amod-panel" id="n3sec-n2prompts">
-        <div class="aintro" style="border-color:rgba(124,109,250,0.2)"><div class="aintro-eye" style="color:#9d91fb">Nível 2 · Incluído</div><div class="aintro-title">30 Prompts Avançados</div><div class="aintro-desc">Todos os 30 prompts do Nível 2 estão incluídos na sua assinatura Completa.</div></div>
+        <div class="aintro" style="border-color:rgba(0,200,83,0.2)"><div class="aintro-eye" style="color:#00c853">✦ Bônus Incluído</div><div class="aintro-title">30 Prompts Avançados de Negociação</div><div class="aintro-desc">Scripts para cada situação — banco, financeira, cartão, Serasa e muito mais.</div></div>
         <div id="n3-n2-prompts"></div>
       </div>
       <div class="amod-panel" id="n3sec-n2scripts">
-        <div class="aintro" style="border-color:rgba(124,109,250,0.2)"><div class="aintro-eye" style="color:#9d91fb">Nível 2 · Incluído</div><div class="aintro-title">Scripts por Tipo de Credor</div><div class="aintro-desc">6 scripts completos com argumentos e contra-argumentos.</div></div>
+        <div class="aintro" style="border-color:rgba(0,200,83,0.2)"><div class="aintro-eye" style="color:#00c853">✦ Bônus Incluído</div><div class="aintro-title">Scripts por Tipo de Credor</div><div class="aintro-desc">6 scripts completos com argumentos e contra-argumentos.</div></div>
         <div id="n3-n2-scripts"></div>
       </div>
       <div class="amod-panel" id="n3sec-n2msgs">
-        <div class="aintro" style="border-color:rgba(124,109,250,0.2)"><div class="aintro-eye" style="color:#9d91fb">Nível 2 · Incluído</div><div class="aintro-title">8 Modelos de Mensagem Prontos</div><div class="aintro-desc">WhatsApp, e-mail, Procon — todos prontos para copiar e enviar.</div></div>
+        <div class="aintro" style="border-color:rgba(0,200,83,0.2)"><div class="aintro-eye" style="color:#00c853">✦ Bônus Incluído</div><div class="aintro-title">8 Modelos de Mensagem Prontos</div><div class="aintro-desc">WhatsApp, e-mail, Procon — todos prontos para copiar e enviar.</div></div>
         <div class="amsg-grid" id="n3-n2-msgs"></div>
       </div>
       <div class="amod-panel" id="n3sec-n2plan">
-        <div class="aintro" style="border-color:rgba(124,109,250,0.2)"><div class="aintro-eye" style="color:#9d91fb">Nível 2 · Incluído</div><div class="aintro-title">Planilha de Controle de Dívidas</div><div class="aintro-desc">Registre, calcule e priorize suas dívidas.</div></div>
+        <div class="aintro" style="border-color:rgba(0,200,83,0.2)"><div class="aintro-eye" style="color:#9d91fb">Nível 2 · Incluído</div><div class="aintro-title">Planilha de Controle de Dívidas</div><div class="aintro-desc">Registre, calcule e priorize suas dívidas.</div></div>
         <div class="aplan-stats">
           <div class="aps"><div class="aps-l">Total</div><div class="aps-v" style="color:#9d91fb" id="n3-tot">R$ 0</div></div>
           <div class="aps"><div class="aps-l">Qtd.</div><div class="aps-v" id="n3-qtd">0</div></div>
@@ -2242,13 +2238,13 @@ const n2Groups=[
     {n:'P15',t:'Comparativo de propostas',tag:'Cálculo',txt:`Recebi duas propostas para a mesma dívida de R$[valor original]:\n\nProposta A: [descreva]\nProposta B: [descreva]\n\nCompare matematicamente e me diga:\n1. Qual tem menor custo total\n2. Qual aceitar e por quê\n3. Se há margem para melhorar alguma`},
   ]},
   {ico:'💰',t:'Desconto máximo',prompts:[
-    {n:'P16',t:'Argumentos para desconto +70%',tag:'Avançado',txt:`Minha dívida com [credor] tem [X] anos, vale R$[valor], era R$[valor original].\n\nMe dê argumentos legais para desconto acima de 70%:\n1. Referências ao CDC\n2. Questão da prescrição\n3. Como apresentar minha situação\n4. Script para o atendente`},
-    {n:'P17',t:'Negociação em lote',tag:'Avançado',txt:`Tenho [X] dívidas com o mesmo [banco/grupo]:\n- Produto 1: R$[valor]\n- Produto 2: R$[valor]\nTotal: R$[valor total]\n\nComo usar como alavanca para negociar tudo com desconto maior? Me dê estratégia e roteiro.`},
+    {n:'P16',t:'Argumentos para desconto +70%',tag:'Prompts',txt:`Minha dívida com [credor] tem [X] anos, vale R$[valor], era R$[valor original].\n\nMe dê argumentos legais para desconto acima de 70%:\n1. Referências ao CDC\n2. Questão da prescrição\n3. Como apresentar minha situação\n4. Script para o atendente`},
+    {n:'P17',t:'Negociação em lote',tag:'Prompts',txt:`Tenho [X] dívidas com o mesmo [banco/grupo]:\n- Produto 1: R$[valor]\n- Produto 2: R$[valor]\nTotal: R$[valor total]\n\nComo usar como alavanca para negociar tudo com desconto maior? Me dê estratégia e roteiro.`},
     {n:'P18',t:'Notificação de dívida prescrita',tag:'Legal',txt:`Confirmei que minha dívida com [credor] de R$[valor] prescreveu em [data].\n\nEscreva notificação formal informando:\n1. Não reconheço a dívida por prescrição\n2. Artigos legais do Código Civil\n3. Encerramento das cobranças`},
     {n:'P19',t:'Declaração de renda comprometida',tag:'Estratégia',txt:`Estou desempregado / com renda reduzida para R$[valor]/mês e não consigo pagar R$[valor] com [credor].\n\nEscreva uma declaração profissional para apresentar ao credor pedindo:\n- Condições especiais de pagamento\n- Desconto por vulnerabilidade financeira`},
     {n:'P20',t:'Contra-proposta com CET',tag:'Cálculo',txt:`O credor ofertou R$[valor] em [X] parcelas de R$[parcela].\n\nCalcule o CET e:\n1. Diga se é boa ou ruim\n2. Monte uma contra-proposta melhor com justificativa matemática\n3. Escreva o script para apresentar`},
     {n:'P21',t:'Melhor época para negociar',tag:'Estratégia',txt:`Quais meses do ano têm maiores descontos para quitação?\n\nMe explique:\n1. Época do Feirão Serasa\n2. Por que janeiro e virada de trimestre\n3. Como me preparar para essas janelas\n4. Estratégia por tipo de credor`},
-    {n:'P22',t:'Procon como alavanca',tag:'Avançado',txt:`Como usar uma reclamação no Procon como argumento para conseguir desconto maior com [credor]?\n\nExplique:\n1. Se é ético e legal\n2. Como registrar antes de negociar\n3. Como mencionar sem ser agressivo\n4. Quais resultados esperar`},
+    {n:'P22',t:'Procon como alavanca',tag:'Prompts',txt:`Como usar uma reclamação no Procon como argumento para conseguir desconto maior com [credor]?\n\nExplique:\n1. Se é ético e legal\n2. Como registrar antes de negociar\n3. Como mencionar sem ser agressivo\n4. Quais resultados esperar`},
   ]},
   {ico:'⚖️',t:'Direitos do consumidor',prompts:[
     {n:'P23',t:'Resposta a cobrança abusiva',tag:'CDC',txt:`Recebi: [ligações em excesso / ameaças / contato no trabalho].\n\nEscreva notificação formal com:\n1. Citação do Art. 42 CDC\n2. Pedido de contato só por escrito\n3. Aviso de registro de todas as tentativas\n4. Consequências legais se continuar`},
@@ -2258,8 +2254,8 @@ const n2Groups=[
     {n:'P27',t:'Protocolo como prova jurídica',tag:'Estratégia',txt:`Como garantir que minha negociação com [credor] fique registrada formalmente?\n\nMe ensine:\n1. Como solicitar protocolo de cada atendimento\n2. Como guardar prints e gravações\n3. Como usar no Procon ou Juizado\n4. O que fazer se o atendente negar`},
   ]},
   {ico:'🏦',t:'Por tipo de dívida',prompts:[
-    {n:'P28',t:'Financiamento de veículo',tag:'Avançado',txt:`Tenho [X] parcelas em atraso com [banco]. Carro vale R$[valor], dívida R$[valor]. Paguei [X]%.\n\nMe explique:\n1. Meus direitos antes da busca e apreensão\n2. O que muda se paguei mais de 40%\n3. Como negociar pausa ou quitação parcial\n4. Script para ligar hoje`},
-    {n:'P29',t:'Financiamento imobiliário',tag:'Avançado',txt:`[X] parcelas atrasadas do imóvel com [banco/CEF]. Parcela: R$[valor]. Total: R$[valor].\n\nExplique:\n1. Quando ocorre execução hipotecária\n2. Como solicitar pausa ou reestruturação\n3. Programas especiais CEF\n4. Passos para proteger o imóvel esta semana`},
+    {n:'P28',t:'Financiamento de veículo',tag:'Prompts',txt:`Tenho [X] parcelas em atraso com [banco]. Carro vale R$[valor], dívida R$[valor]. Paguei [X]%.\n\nMe explique:\n1. Meus direitos antes da busca e apreensão\n2. O que muda se paguei mais de 40%\n3. Como negociar pausa ou quitação parcial\n4. Script para ligar hoje`},
+    {n:'P29',t:'Financiamento imobiliário',tag:'Prompts',txt:`[X] parcelas atrasadas do imóvel com [banco/CEF]. Parcela: R$[valor]. Total: R$[valor].\n\nExplique:\n1. Quando ocorre execução hipotecária\n2. Como solicitar pausa ou reestruturação\n3. Programas especiais CEF\n4. Passos para proteger o imóvel esta semana`},
     {n:'P30',t:'Acordo com pessoa física',tag:'Relacionamento',txt:`Devo R$[valor] para [familiar/amigo] desde [data].\n\nEscreva proposta formal que:\n1. Reconheça a dívida com respeito\n2. Proponha [à vista / parcelas]\n3. Preserve o relacionamento\n4. Inclua recibo de quitação`},
   ]},
   {ico:'📊',t:'Serasa e nome limpo',prompts:[
