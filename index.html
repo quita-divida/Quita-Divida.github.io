@@ -974,7 +974,7 @@ footer a:hover { color:var(--verde); }
   <div class="access-inner">
     <span class="access-icon">🔐</span>
     <h2>Área de <em>Acesso</em></h2>
-    <p>Já é aluno? Digite sua senha abaixo para acessar o conteúdo do seu nível.</p>
+    <p>Já tem acesso? Digite sua senha abaixo para entrar no método completo.</p>
     <div class="access-box">
       <div class="access-tabs">
         <button class="tab-btn active" onclick="showTab('login')">Já tenho senha</button>
@@ -989,7 +989,7 @@ footer a:hover { color:var(--verde); }
         <div class="access-msg" id="msg-acesso"></div>
       </div>
       <div class="tab-content" id="tab-comprar">
-        <p style="font-size:14px;color:var(--muted);margin-bottom:20px;text-align:left;">Escolha seu nível e faça o pagamento. Você recebe a senha em até 5 minutos.</p>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:20px;text-align:left;">Faça o pagamento de R$ 37 via PIX e receba sua senha em até 5 minutos pelo WhatsApp.</p>
         <a href="#niveis" class="access-submit" style="display:block;text-decoration:none;text-align:center;">Ver os planos disponíveis →</a>
       </div>
     </div>
@@ -1039,9 +1039,9 @@ footer a:hover { color:var(--verde); }
     <div id="pix-box" style="background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:36px;margin-bottom:24px;">
 
       <div id="pix-nivel-info" style="margin-bottom:28px;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--muted);margin-bottom:8px;">NÍVEL SELECIONADO</div>
-        <div id="pix-nivel-nome" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--verde);letter-spacing:2px;">Escolha um nível acima</div>
-        <div id="pix-nivel-valor" style="font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--white);letter-spacing:-1px;line-height:1;">—</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--muted);margin-bottom:8px;">PRODUTO SELECIONADO</div>
+        <div id="pix-nivel-nome" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--verde);letter-spacing:2px;">Método Completo</div>
+        <div id="pix-nivel-valor" style="font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--white);letter-spacing:-1px;line-height:1;">R$ 37,00</div>
       </div>
 
       <!-- Chave Pix -->
@@ -1317,8 +1317,8 @@ if(window.location.hash === '#admin') verificarHash();
 <script>
 function selecionarNivel(nivel, valor) {
   const nomes = {1: 'Completo', 2: 'Completo', 3: 'Completo'};
-  const cores = {1: '#00e87a', 2: '#7c6dfa', 3: '#f5a623'};
-  document.getElementById('pix-nivel-nome').textContent = 'Nível ' + nivel + ' — ' + nomes[nivel];
+  const cores = {1: '#00e87a', 2: '#00e87a', 3: '#00e87a'};
+  document.getElementById('pix-nivel-nome').textContent = 'Método Completo';
   document.getElementById('pix-nivel-nome').style.color = cores[nivel];
   document.getElementById('pix-nivel-valor').textContent = 'R$ ' + valor.toFixed(2).replace('.', ',');
   const msg = encodeURIComponent('Olá! Acabei de fazer o pagamento do QUITA Nível ' + nivel + ' — ' + nomes[nivel] + ' (R$ ' + valor.toFixed(2).replace('.', ',') + '). Segue o comprovante! Meu nome: [seu nome]');
@@ -1629,7 +1629,10 @@ function abrirApp(nivel){
 }
 
 // Sessão em memória — limpa automaticamente ao recarregar a página (token não persiste)
-// window.addEventListener('load') — nenhuma ação necessária, _sessionToken inicia como null
+// Auto-selecionar produto único ao carregar
+window.addEventListener('load', function(){
+  selecionarNivel(3, 37.00);
+});
 
 // Shake animation
 const shakeStyle=document.createElement('style');
