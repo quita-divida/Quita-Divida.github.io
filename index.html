@@ -765,7 +765,7 @@ footer a:hover { color:var(--verde); }
 
     <div class="hero-trust">
       <span class="trust-i">🔒 Acesso imediato</span>
-      <span class="trust-i">⚡ A partir de R$ 9,90</span>
+      <span class="trust-i">⚡ Acesso completo por R$ 37</span>
       <span class="trust-i">🤖 Método com IA</span>
       <span class="trust-i">✅ Garantia de 7 dias</span>
     </div>
@@ -810,63 +810,135 @@ footer a:hover { color:var(--verde); }
 </div>
 
 <!-- NÍVEIS -->
+
+<!-- DEMO PROMPT IA -->
+<div style="padding:80px 32px;max-width:960px;margin:0 auto;" id="demo">
+  <div class="sec-label">Veja na prática</div>
+  <h2>Teste <em>agora mesmo</em><br>o poder da IA</h2>
+  <p style="color:var(--muted);font-size:15px;max-width:560px;margin-top:12px;margin-bottom:48px;">Este é um prompt real do método QUITA. Veja o que acontece quando você cola no ChatGPT — e depois imagine fazer isso com 40+ prompts exclusivos.</p>
+
+  <!-- Prompt card -->
+  <div style="background:var(--dark3);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:24px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--dark4);">
+      <div style="width:8px;height:8px;border-radius:50%;background:#FF5F57;"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:#FFBD2E;"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:#28CA41;"></div>
+      <span style="font-size:12px;color:var(--muted);margin-left:8px;font-weight:700;letter-spacing:1px;">PROMPT REAL — COLE NO CHATGPT</span>
+    </div>
+    <div style="padding:28px;font-size:14px;color:#C0D0C0;line-height:1.8;font-family:monospace;">
+      Você é um especialista em negociação de dívidas no Brasil, com profundo conhecimento do Código de Defesa do Consumidor e das práticas dos principais credores.<br><br>
+      Minha situação:<br>
+      — Dívida original: <span style="color:var(--verde);font-style:italic;">[R$ 3.200]</span> com o <span style="color:var(--verde);font-style:italic;">[Nubank]</span><br>
+      — Tempo em atraso: <span style="color:var(--verde);font-style:italic;">[14 meses]</span><br>
+      — Situação atual: nome negativado no Serasa<br>
+      — Renda mensal: <span style="color:var(--verde);font-style:italic;">[R$ 1.800]</span><br><br>
+      Me dê:<br>
+      1. O script exato para ligar ou mandar mensagem hoje pedindo desconto<br>
+      2. Qual desconto mínimo devo aceitar e qual é o ideal a pedir<br>
+      3. Os argumentos legais que posso usar a meu favor<br>
+      4. O que fazer se o atendente disser não
+    </div>
+    <div style="padding:0 28px 20px;display:flex;justify-content:flex-end;">
+      <button onclick="cpDemo()" id="btn-demo-cp" style="display:flex;align-items:center;gap:8px;background:var(--verde);color:var(--dark);border:none;font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;padding:10px 22px;border-radius:100px;cursor:pointer;transition:all 0.2s;">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16" height="16"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        Copiar prompt
+      </button>
+    </div>
+  </div>
+
+  <!-- Resposta da IA simulada -->
+  <div style="background:var(--dark2);border:1px solid rgba(0,200,83,0.2);border-radius:20px;overflow:hidden;margin-bottom:40px;">
+    <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid rgba(0,200,83,0.15);background:rgba(0,200,83,0.05);">
+      <div style="width:28px;height:28px;background:var(--verde);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--dark);font-size:14px;">IA</div>
+      <span style="font-size:12px;color:var(--verde);font-weight:700;letter-spacing:1px;">RESPOSTA DO CHATGPT</span>
+      <span style="font-size:11px;color:var(--muted);margin-left:auto;">exemplo real gerado pela IA</span>
+    </div>
+    <div style="padding:28px;font-size:14px;color:#C0D0C0;line-height:1.9;">
+      <p style="color:var(--white);font-weight:700;margin-bottom:16px;">✅ Análise da sua situação com Nubank — dívida de R$ 3.200 (14 meses em atraso)</p>
+
+      <p style="color:var(--verde);font-weight:700;margin-bottom:8px;">1. Script para contato (WhatsApp ou ligação)</p>
+      <div style="background:var(--dark4);border-left:3px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 18px;margin-bottom:20px;font-style:italic;color:#A0C0A0;">
+        "Olá, meu nome é [seu nome], CPF [número]. Tenho uma dívida em aberto de R$ 3.200 e estou entrando em contato para regularizar minha situação. Considerando o tempo em aberto e minha renda atual, consigo pagar à vista até R$ 960 para quitação total com baixa imediata do Serasa. Vocês conseguem analisar essa proposta?"
+      </div>
+
+      <p style="color:var(--verde);font-weight:700;margin-bottom:8px;">2. Faixa de desconto para sua situação</p>
+      <p style="margin-bottom:4px;">— <strong style="color:var(--white);">Desconto mínimo aceitável:</strong> 40% (R$ 1.920)</p>
+      <p style="margin-bottom:4px;">— <strong style="color:var(--white);">Desconto ideal a pedir:</strong> 70% (R$ 960)</p>
+      <p style="margin-bottom:20px;color:var(--muted);font-size:13px;">Dívidas com mais de 12 meses têm alta probabilidade de desconto acima de 60%, pois o credor já provisionou o prejuízo contabilmente.</p>
+
+      <p style="color:var(--verde);font-weight:700;margin-bottom:8px;">3. Argumentos legais a seu favor</p>
+      <p style="margin-bottom:4px;">— Art. 42 do CDC: proíbe cobrança vexatória ou com ameaça</p>
+      <p style="margin-bottom:4px;">— Dívidas com +5 anos estão prescritas judicialmente (verifique a data)</p>
+      <p style="margin-bottom:20px;">— Você pode exigir a proposta por escrito antes de aceitar qualquer acordo</p>
+
+      <p style="color:var(--verde);font-weight:700;margin-bottom:8px;">4. Se o atendente disser não</p>
+      <p>Diga: <em style="color:#A0C0A0;">"Entendo. Vou aguardar então o prazo de prescrição e registrar uma reclamação no Procon e no Banco Central antes disso."</em> — na maioria dos casos, isso abre espaço para um supervisor com mais autonomia de desconto.</p>
+    </div>
+  </div>
+
+  <!-- CTA após demo -->
+  <div style="background:linear-gradient(135deg,var(--dark3),rgba(0,200,83,0.06));border:1px solid rgba(0,200,83,0.25);border-radius:20px;padding:36px;text-align:center;">
+    <p style="font-size:13px;color:var(--verde);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">Isso foi 1 prompt de 40+</p>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:12px;">O método completo por <em style="color:var(--verde);">R$ 37</em></h3>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Scripts por credor, planilha, seus direitos pelo CDC, vídeo-aula e suporte direto com Messias.</p>
+    <a href="#niveis" style="display:inline-flex;align-items:center;gap:10px;background:var(--verde);color:var(--dark);font-weight:900;font-size:16px;padding:18px 40px;border-radius:100px;text-decoration:none;transition:all 0.2s;">
+      Quero o método completo →
+    </a>
+  </div>
+</div>
+
+<!-- VÍDEO ÚNICO — prova social antes da compra -->
+<div style="background:var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 32px;">
+  <div style="max-width:760px;margin:0 auto;">
+    <div class="sec-label" style="text-align:center;">Na prática</div>
+    <h2 style="text-align:center;margin-bottom:12px;">Veja como a <em>negociação funciona</em></h2>
+    <p style="text-align:center;color:var(--muted);font-size:15px;margin-bottom:36px;">Antes de comprar, assista este vídeo do Serasa ensinando o passo a passo real de uma negociação — é exatamente o que o método QUITA automatiza com IA.</p>
+    <div style="background:var(--dark3);border:1px solid var(--border);border-radius:20px;overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--dark4);">
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#ff4444;background:rgba(255,68,68,0.1);border-radius:4px;padding:4px 8px;">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+          YouTube
+        </span>
+        <span style="font-size:13px;color:var(--white);font-weight:600;">Como negociar dívida com banco — passo a passo</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:auto;">Serasa Ensina (Oficial)</span>
+      </div>
+      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+        <iframe style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;" src="https://www.youtube.com/embed/j1t02LhmFVU?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+    <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:16px;">O QUITA entrega os prompts e scripts para você fazer isso em minutos — sem precisar saber de antemão o que dizer.</p>
+  </div>
+</div>
+
 <div class="levels-wrap" id="niveis">
   <div class="levels-inner">
-    <div class="sec-label" style="text-align:center;">Escolha seu nível</div>
-    <h2 style="text-align:center;">Comece por <em>R$ 9,90</em><br>e evolua no seu ritmo</h2>
-    <p style="text-align:center; color:var(--muted); max-width:500px; margin:0 auto; font-size:15px;">Após o pagamento, você recebe a senha de acesso pelo WhatsApp em até 5 minutos.</p>
+    <div class="sec-label" style="text-align:center;">Acesso completo</div>
+    <h2 style="text-align:center;">Tudo que você precisa<br>por apenas <em>R$ 37</em></h2>
+    <p style="text-align:center; color:var(--muted); max-width:500px; margin:0 auto; font-size:15px;">Um único pagamento. Acesso a todo o método — prompts, scripts, planilha, vídeos e suporte.</p>
 
-    <div class="levels-grid">
-
-      <!-- NÍVEL 1 -->
-      <div class="level-card">
-        <div class="level-num">NÍVEL 01</div>
-        <div class="level-name">Starter</div>
-        <div class="level-price">R$9<span>,90</span></div>
-        <p class="level-desc">Dê o primeiro passo. Prompts prontos para começar a negociar suas dívidas hoje mesmo.</p>
-        <ul class="level-includes">
-          <li><span class="li-check">✓</span> 10 prompts prontos para negociar dívidas</li>
-          <li><span class="li-check">✓</span> Script básico de abordagem ao credor</li>
-          <li><span class="li-check">✓</span> Guia: como usar o ChatGPT para negociar</li>
-          <li><span class="li-check">✓</span> Acesso via senha exclusiva</li>
-        </ul>
-        <a href="#pagamento" onclick="selecionarNivel(1, 9.90)" class="level-btn">Quero o Nível 1 →</a>
-      </div>
-
-      <!-- NÍVEL 2 -->
-      <div class="level-card destaque">
-        <div class="level-num">NÍVEL 02</div>
-        <div class="level-name">Avançado</div>
-        <div class="level-price">R$29<span>,90</span></div>
-        <p class="level-desc">O kit completo de negociação. Scripts, planilhas e estratégias para quitar de vez.</p>
-        <ul class="level-includes">
-          <li><span class="li-check">✓</span> Tudo do Nível 1</li>
-          <li><span class="li-check">✓</span> 30 prompts avançados de negociação</li>
-          <li><span class="li-check">✓</span> Scripts para bancos, financeiras e cartões</li>
-          <li><span class="li-check">✓</span> Planilha de controle de dívidas com IA</li>
-          <li><span class="li-check">✓</span> Como pedir desconto de até 90%</li>
-          <li><span class="li-check">✓</span> Modelos de e-mail e mensagem prontos</li>
-        </ul>
-        <a href="#pagamento" onclick="selecionarNivel(2, 29.90)" class="level-btn">Quero o Nível 2 →</a>
-      </div>
-
-      <!-- NÍVEL 3 -->
-      <div class="level-card">
-        <div class="level-num">NÍVEL 03</div>
-        <div class="level-name">Completo</div>
-        <div class="level-price">R$49<span>,90</span></div>
-        <p class="level-desc">O curso completo. Do diagnóstico ao nome limpo — tudo com IA do seu lado.</p>
-        <ul class="level-includes">
-          <li><span class="li-check">✓</span> Tudo dos Níveis 1 e 2</li>
-          <li><span class="li-check">✓</span> Curso completo em vídeo (8 módulos)</li>
-          <li><span class="li-check">✓</span> Como consultar e limpar o nome no Serasa com IA</li>
-          <li><span class="li-check">✓</span> Estratégia de renegociação por tipo de dívida</li>
+    <div style="max-width:600px;margin:48px auto 0;">
+      <div class="level-card destaque" style="padding:48px 40px;">
+        <div class="level-num">MÉTODO COMPLETO</div>
+        <div class="level-name" style="font-size:36px;">QUITA</div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px;">
+          <div class="level-price" style="font-size:80px;">R$37</div>
+          <div style="font-size:14px;color:var(--muted);text-decoration:line-through;">R$49,90</div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:28px;">pagamento único · sem mensalidade · acesso vitalício</p>
+        <ul class="level-includes" style="margin-bottom:36px;">
+          <li><span class="li-check">✓</span> 40+ prompts prontos para negociar qualquer dívida</li>
+          <li><span class="li-check">✓</span> Scripts específicos para banco, financeira e cartão</li>
+          <li><span class="li-check">✓</span> Modelos de mensagem para WhatsApp e e-mail</li>
+          <li><span class="li-check">✓</span> Planilha interativa de controle de dívidas com IA</li>
+          <li><span class="li-check">✓</span> Vídeo-aula: como negociar do zero ao acordo</li>
+          <li><span class="li-check">✓</span> Seus direitos pelo CDC — o que o credor não pode fazer</li>
+          <li><span class="li-check">✓</span> Como limpar o nome no Serasa com IA</li>
           <li><span class="li-check">✓</span> Planejamento financeiro pós-quitação</li>
-          <li><span class="li-check">✓</span> Suporte pelo WhatsApp</li>
+          <li><span class="li-check">✓</span> Suporte direto pelo WhatsApp com Messias</li>
         </ul>
-        <a href="#pagamento" onclick="selecionarNivel(3, 49.90)" class="level-btn">Quero o Nível 3 →</a>
+        <a href="#pagamento" onclick="selecionarNivel(3, 37.00)" class="level-btn" style="font-size:18px;padding:20px;">Quero sair das dívidas agora →</a>
+        <p style="font-size:12px;color:var(--muted);margin-top:16px;text-align:center;">🛡️ Garantia de 7 dias · 🔒 Pagamento seguro · ⚡ Acesso imediato</p>
       </div>
-
     </div>
   </div>
 </div>
@@ -874,28 +946,23 @@ footer a:hover { color:var(--verde); }
 <!-- COMO FUNCIONA -->
 <div class="steps-wrap">
   <div class="sec-label">Como funciona</div>
-  <h2>Em 4 passos<br>simples</h2>
+  <h2>Em 3 passos<br>simples</h2>
 
   <div class="steps">
     <div class="step">
       <div class="step-num">01</div>
-      <h3>Escolha seu nível</h3>
-      <p>Selecione o plano que cabe no seu bolso agora. Você pode evoluir depois.</p>
+      <h3>Pague com Pix</h3>
+      <p>R$ 37 — pagamento único, sem mensalidade. Processamento seguro.</p>
     </div>
     <div class="step">
       <div class="step-num">02</div>
-      <h3>Pague com segurança</h3>
-      <p>Pix, cartão ou boleto. Processado pela Kiwify com total segurança.</p>
+      <h3>Receba sua senha</h3>
+      <p>Envie o comprovante pelo WhatsApp e receba a senha em até 5 minutos.</p>
     </div>
     <div class="step">
       <div class="step-num">03</div>
-      <h3>Receba sua senha</h3>
-      <p>Em até 5 minutos, você recebe a senha de acesso pelo WhatsApp ou e-mail.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
       <h3>Acesse e aplique</h3>
-      <p>Entre com sua senha aqui mesmo e comece a negociar suas dívidas com IA.</p>
+      <p>Entre com sua senha aqui mesmo e use os prompts para negociar hoje.</p>
     </div>
   </div>
 </div>
@@ -957,7 +1024,7 @@ footer a:hover { color:var(--verde); }
 <!-- CTA FINAL -->
 <div class="cta-final">
   <h2>Chega de dívida.<br>Comece agora.</h2>
-  <p>Por apenas R$ 9,90 você dá o primeiro passo para o nome limpo.</p>
+  <p>Por apenas R$ 37 — pagamento único — você acessa o método completo.</p>
   <a href="#niveis" class="cta-dark">Quero sair das dívidas →</a>
 </div>
 
@@ -1219,7 +1286,7 @@ function copiarSenhaAdmin(nivel){
 function enviarWhatsApp(nivel){
   const senha = admSenhaAtual[nivel];
   if(!senha) return;
-  const nomes = {1:'Starter (R$9,90)',2:'Avançado (R$29,90)',3:'Completo (R$49,90)'};
+  const nomes = {1:'Completo (R$37,00)',2:'Completo (R$37,00)',3:'Completo (R$37,00)'};
   const msg = encodeURIComponent(`Olá! Messias da Maximus Consultoria. 🎉 Seu acesso ao QUITA foi confirmado!\n\n✅ Nível: ${nomes[nivel]}\n🔑 Sua senha de acesso: *${senha}*\n\n📱 Acesse agora:\nhttps://quita-divida.github.io\n\nClique em "Já tenho senha", digite a senha acima e acesse seu conteúdo!\n\nQualquer dúvida estou à disposição. 🚀\n— Messias | Maximus Consultoria`);
   window.open('https://wa.me/?text='+msg, '_blank');
 }
@@ -1249,7 +1316,7 @@ if(window.location.hash === '#admin') verificarHash();
 
 <script>
 function selecionarNivel(nivel, valor) {
-  const nomes = {1: 'Starter', 2: 'Avançado', 3: 'Completo'};
+  const nomes = {1: 'Completo', 2: 'Completo', 3: 'Completo'};
   const cores = {1: '#00e87a', 2: '#7c6dfa', 3: '#f5a623'};
   document.getElementById('pix-nivel-nome').textContent = 'Nível ' + nivel + ' — ' + nomes[nivel];
   document.getElementById('pix-nivel-nome').style.color = cores[nivel];
@@ -2887,6 +2954,23 @@ function _clipFallback(txt,cb){
 
 function cpTxtRaw(txt,btnId){
   cpTxt(txt,btnId);
+}
+
+function cpDemo(){
+  const txt=`Você é um especialista em negociação de dívidas no Brasil, com profundo conhecimento do Código de Defesa do Consumidor e das práticas dos principais credores.
+
+Minha situação:
+— Dívida original: [valor] com o [credor]
+— Tempo em atraso: [meses]
+— Situação atual: nome negativado no Serasa
+— Renda mensal: [sua renda]
+
+Me dê:
+1. O script exato para ligar ou mandar mensagem hoje pedindo desconto
+2. Qual desconto mínimo devo aceitar e qual é o ideal a pedir
+3. Os argumentos legais que posso usar a meu favor
+4. O que fazer se o atendente disser não`;
+  cpTxt(txt,'btn-demo-cp');
 }
 
 // ── MOBILE MENU ──
