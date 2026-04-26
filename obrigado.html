@@ -323,7 +323,7 @@
   <div class="senha-card">
     <div class="senha-label">Sua senha de acesso</div>
     <div class="senha-display" onclick="copiarSenha()">
-      <span class="senha-text" id="senha-txt">QUITA@IA2026</span>
+      <span class="senha-text" id="senha-txt">QUITA2026</span>
       <button class="copy-btn" id="copy-btn" onclick="copiarSenha(event)">
         Copiar
       </button>
@@ -331,7 +331,7 @@
     <div class="senha-hint">Clique na senha ou no botão para copiar automaticamente</div>
   </div>
 
-  <a href="https://quita-divida.github.io/" target="_blank" class="btn-acessar">
+  <a href="https://quita-divida.github.io/app.html" target="_blank" class="btn-acessar">
     <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" width="20" height="20">
       <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
     </svg>
@@ -346,11 +346,11 @@
     </div>
     <div class="step-item">
       <div class="step-num">2</div>
-      <div class="step-text"><strong>Clique em "Acessar o método"</strong> e role até a seção "Área de Acesso"</div>
+      <div class="step-text"><strong>Clique em "Acessar o método"</strong> — você será levado direto para a área de membros</div>
     </div>
     <div class="step-item">
       <div class="step-num">3</div>
-      <div class="step-text"><strong>Cole a senha</strong> no campo e clique em Acessar — conteúdo liberado na hora</div>
+      <div class="step-text"><strong>Cole a senha</strong> no campo de acesso e clique em Entrar — conteúdo liberado na hora</div>
     </div>
     <div class="step-item">
       <div class="step-num">4</div>
@@ -367,7 +367,7 @@
 <script>
 function copiarSenha(e) {
   if (e) e.stopPropagation();
-  const senha = 'QUITA@IA2026';
+  const senha = 'QUITA2026';
   const btn = document.getElementById('copy-btn');
 
   if (navigator.clipboard && window.isSecureContext) {
