@@ -34,7 +34,6 @@
     position: relative;
   }
 
-  /* fundo animado */
   .bg-grid {
     position: fixed; inset: 0; z-index: 0;
     background-image:
@@ -62,7 +61,6 @@
     50%      { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
   }
 
-  /* partículas */
   .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
   .particle {
     position: absolute;
@@ -86,7 +84,6 @@
   .particle:nth-child(6)  { left: 80%; animation-duration: 10s; animation-delay: 4s; }
   .particle:nth-child(7)  { left: 90%; animation-duration: 12s; animation-delay: 1.5s; }
 
-  /* container principal */
   .container {
     position: relative; z-index: 1;
     width: 100%; max-width: 560px;
@@ -95,7 +92,6 @@
     gap: 0;
   }
 
-  /* ícone de sucesso */
   .success-ring {
     width: 90px; height: 90px;
     border-radius: 50%;
@@ -125,7 +121,6 @@
     to   { transform: scale(1); }
   }
 
-  /* título */
   .title-wrap {
     text-align: center; margin-bottom: 32px;
     animation: fadeUp 0.5s ease 0.2s both;
@@ -145,7 +140,6 @@
     font-size: 15px; color: #a0b0a0; line-height: 1.6;
   }
 
-  /* card principal da senha */
   .senha-card {
     width: 100%;
     background: var(--dark3);
@@ -215,7 +209,6 @@
   }
   .senha-hint::before { content: '💡'; }
 
-  /* botão acessar */
   .btn-acessar {
     display: flex; align-items: center; justify-content: center; gap: 12px;
     width: 100%;
@@ -236,7 +229,6 @@
   }
   .btn-acessar svg { flex-shrink: 0; }
 
-  /* steps */
   .steps-card {
     width: 100%;
     background: var(--dark2);
@@ -264,7 +256,6 @@
   .step-text { font-size: 13px; color: #a0b0a0; line-height: 1.5; padding-top: 3px; }
   .step-text strong { color: var(--white); }
 
-  /* garantia */
   .garantia {
     display: flex; align-items: center; gap: 10px;
     font-size: 12px; color: var(--muted);
@@ -277,7 +268,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  /* confetti */
   .confetti-piece {
     position: fixed;
     width: 8px; height: 8px;
@@ -323,7 +313,7 @@
   <div class="senha-card">
     <div class="senha-label">Sua senha de acesso</div>
     <div class="senha-display" onclick="copiarSenha()">
-      <span class="senha-text" id="senha-txt">QUITA2026</span>
+      <span class="senha-text" id="senha-txt">Gerando...</span>
       <button class="copy-btn" id="copy-btn" onclick="copiarSenha(event)">
         Copiar
       </button>
@@ -365,17 +355,62 @@
 </div>
 
 <script>
+// ═══════════════════════════════════════
+// NOVO: SISTEMA DE SENHAS ÚNICAS
+// Cada vez que a página carrega, gera uma senha diferente
+// Formato: QUITA-XXXXXX-XXXXXX (X = número ou letra maiúscula)
+// ═══════════════════════════════════════
+
+let senhaGlobal = '';
+
+(function() {
+  function gerarSenhaUnica() {
+    // Pega o timestamp atual em milissegundos
+    const timestamp = Date.now();
+    
+    // Converte para base 36 (usa 0-9 e A-Z)
+    // Ex: 1714155322847 → "l3x9m2k7p4"
+    const codigoTempo = timestamp.toString(36);
+    
+    // Pega os últimos 6 caracteres
+    const parteTempo = codigoTempo.slice(-6).toUpperCase();
+    
+    // Gera 6 caracteres aleatórios (2 bilhões de combinações)
+    // Math.random() → 0.847291...
+    // toString(36) → "0.pq7xk9..."
+    // substring(2, 8) → "pq7xk9"
+    const aleatorio = Math.random().toString(36).substring(2, 8).toUpperCase();
+    
+    // Monta a senha final: QUITA-XXXXXX-XXXXXX
+    return `QUITA-${parteTempo}-${aleatorio}`;
+  }
+
+  // Gera a senha única quando a página carrega
+  senhaGlobal = gerarSenhaUnica();
+  
+  // Exibe na tela
+  document.getElementById('senha-txt').textContent = senhaGlobal;
+  
+  console.log('✅ Senha única gerada:', senhaGlobal);
+})();
+
+// ═══════════════════════════════════════
+// Função de cópia atualizada
+// ═══════════════════════════════════════
+
 function copiarSenha(e) {
   if (e) e.stopPropagation();
-  const senha = 'QUITA2026';
   const btn = document.getElementById('copy-btn');
 
   if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(senha).then(() => feedback());
+    navigator.clipboard.writeText(senhaGlobal).then(() => feedback());
   } else {
     const el = document.createElement('textarea');
-    el.value = senha; el.style.position = 'fixed'; el.style.opacity = '0';
-    document.body.appendChild(el); el.select();
+    el.value = senhaGlobal; 
+    el.style.position = 'fixed'; 
+    el.style.opacity = '0';
+    document.body.appendChild(el); 
+    el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
     feedback();
@@ -391,6 +426,10 @@ function copiarSenha(e) {
     lancarConfetti();
   }
 }
+
+// ═══════════════════════════════════════
+// Efeito de confetti
+// ═══════════════════════════════════════
 
 function lancarConfetti() {
   const cores = ['#00c853','#ffffff','#a5f3c0','#00e676','#69f0ae'];
@@ -408,7 +447,7 @@ function lancarConfetti() {
   }
 }
 
-// confetti automático ao carregar
+// Confetti automático ao carregar
 window.addEventListener('load', () => {
   setTimeout(lancarConfetti, 600);
 });
