@@ -1498,7 +1498,11 @@ const n3ModContent=[
   `<div class="aintro"><div class="aintro-eye" style="color:#f5a623">Módulo 05 · Finanças</div><div class="aintro-title">60% das pessoas se endividam novamente em 2 anos</div><div class="aintro-desc">Este módulo existe para garantir que você não seja uma delas.</div></div>
   <div class="asec"><span class="asec-lbl">Calculadora 50-30-20</span><div class="asec-line"></div></div>
   <div class="abudget">
-    <div class="abud-in"><div class="abud-lbl">Sua renda mensal líquida (R$)</div><input class="abud-inp" style="color:#fbbf4a" type="number" id="b5-renda" value="3500" oninput="calcN3Budget()"><div style="margin-top:14px;font-size:12px;color:var(--text3);line-height:1.7"><b style="color:#fb7185">50%</b> necessidades · <b style="color:#fbbf24">30%</b> desejos · <b style="color:#4ade80">20%</b> poupança</div></div>
+    <div class="abud-in">
+      <div class="abud-lbl">Sua renda mensal líquida (R$)</div>
+      <input class="abud-inp" style="color:#fbbf4a" type="number" id="b5-renda" value="3500" oninput="calcN3Budget()">
+      <div style="margin-top:14px;font-size:12px;color:var(--text3);line-height:1.7"><b style="color:#fb7185">50%</b> necessidades · <b style="color:#fbbf24">30%</b> desejos · <b style="color:#4ade80">20%</b> poupança</div>
+    </div>
     <div class="abud-res">
       <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:10px">Distribuição</div>
       <div class="abud-item"><span class="abud-cat">🏠 Necessidades (50%)</span><span class="abud-val" style="color:#fb7185" id="b5-50">R$ 0</span></div>
@@ -1507,6 +1511,65 @@ const n3ModContent=[
       <div class="abud-bar"><div class="abud-fill" style="background:#fbbf24;width:30%"></div></div>
       <div class="abud-item" style="margin-top:8px"><span class="abud-cat">💰 Poupança (20%)</span><span class="abud-val" style="color:#4ade80" id="b5-20">R$ 0</span></div>
       <div class="abud-bar"><div class="abud-fill" style="background:#4ade80;width:20%"></div></div>
+    </div>
+  </div>
+
+  <div class="asec"><span class="asec-lbl">Calculadora de Reserva de Emergência</span><div class="asec-line"></div></div>
+  <div style="background:#111112;border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;margin:10px 0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+      <div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Despesas mensais totais (R$)</div>
+        <input type="number" id="re-despesas" value="3000" oninput="calcReserva()"
+          style="width:100%;font-size:18px;font-family:var(--font-d);font-weight:700;padding:10px 12px;background:#1a1a1e;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fbbf24;outline:none">
+        <div style="font-size:11px;color:var(--text3);margin-top:6px">aluguel + alimentação + contas + transporte</div>
+      </div>
+      <div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:6px">Tipo de renda</div>
+        <select id="re-tipo" onchange="calcReserva()"
+          style="width:100%;font-size:14px;padding:10px 12px;background:#1a1a1e;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#ebebeb;font-family:var(--font-b);outline:none;height:52px">
+          <option value="3">CLT com carteira assinada (3 meses)</option>
+          <option value="4">Servidor público / concursado (4 meses)</option>
+          <option value="6">Autônomo / freelancer (6 meses)</option>
+          <option value="9">Empresário / sem renda fixa (9 meses)</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+      <div style="background:#0d0d0f;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Meta mínima</div>
+        <div id="re-min" style="font-family:var(--font-d);font-size:20px;font-weight:700;color:#4ade80">R$ 0</div>
+        <div id="re-min-m" style="font-size:10px;color:var(--text3);margin-top:3px">— meses</div>
+      </div>
+      <div style="background:#0d0d0f;border:1px solid rgba(52,211,153,0.25);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Meta ideal ✓</div>
+        <div id="re-ideal" style="font-family:var(--font-d);font-size:20px;font-weight:700;color:#34d399">R$ 0</div>
+        <div id="re-ideal-m" style="font-size:10px;color:var(--text3);margin-top:3px">— meses</div>
+      </div>
+      <div style="background:#0d0d0f;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Meta segura</div>
+        <div id="re-max" style="font-family:var(--font-d);font-size:20px;font-weight:700;color:#60a5fa">R$ 0</div>
+        <div id="re-max-m" style="font-size:10px;color:var(--text3);margin-top:3px">— meses</div>
+      </div>
+    </div>
+    <div style="background:#0d0d0f;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:14px">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.8px">Quanto guardar por mês para atingir a meta ideal</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px">em 6 meses</div>
+          <div id="re-p6" style="font-family:var(--font-d);font-size:16px;font-weight:700;color:#fbbf24">R$ 0</div>
+        </div>
+        <div style="text-align:center;border-left:1px solid rgba(255,255,255,0.06);border-right:1px solid rgba(255,255,255,0.06)">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px">em 12 meses</div>
+          <div id="re-p12" style="font-family:var(--font-d);font-size:16px;font-weight:700;color:#4ade80">R$ 0</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px">em 24 meses</div>
+          <div id="re-p24" style="font-family:var(--font-d);font-size:16px;font-weight:700;color:#60a5fa">R$ 0</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:#4f4f5a;line-height:1.7">
+      ⚠️ <b style="color:#71717a">Referência:</b> meses recomendados baseados em critérios do Banco Central do Brasil e ENEF (Estratégia Nacional de Educação Financeira). Autônomos e empresários sem renda fixa precisam de mais meses por terem maior variabilidade de receita.
     </div>
   </div>`,
   // MOD 5: Crédito
@@ -1578,7 +1641,7 @@ function n3mod(i,ev){
   if(lbl)lbl.textContent='Módulo '+(i+1)+' de 6';
   renderN3Mod(i);
   if(i===0)setTimeout(calcN3Div,100);
-  if(i===4)setTimeout(calcN3Budget,100);
+  if(i===4)setTimeout(()=>{calcN3Budget();calcReserva();},100);
 }
 
 function renderN3Mod(i){
@@ -2231,6 +2294,34 @@ function calcN3Budget(){
   const fmt=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
   const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
   set('b5-50',fmt(r*.5));set('b5-30',fmt(r*.3));set('b5-20',fmt(r*.2));
+}
+
+function calcReserva(){
+  const desp  = parseFloat(document.getElementById('re-despesas')?.value) || 0;
+  const meses = parseInt(document.getElementById('re-tipo')?.value) || 3;
+  const fmt   = n => 'R$\u00a0' + Math.round(n).toLocaleString('pt-BR');
+  const set   = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+
+  // Metas: mín = meses escolhidos -1, ideal = meses, segura = meses +3
+  const mMin   = Math.max(1, meses - 1);
+  const mIdeal = meses;
+  const mMax   = meses + 3;
+
+  const vMin   = desp * mMin;
+  const vIdeal = desp * mIdeal;
+  const vMax   = desp * mMax;
+
+  set('re-min',    desp > 0 ? fmt(vMin)   : 'R$\u00a00');
+  set('re-ideal',  desp > 0 ? fmt(vIdeal) : 'R$\u00a00');
+  set('re-max',    desp > 0 ? fmt(vMax)   : 'R$\u00a00');
+  set('re-min-m',  mMin   + (mMin   === 1 ? ' mês' : ' meses'));
+  set('re-ideal-m',mIdeal + (mIdeal === 1 ? ' mês' : ' meses'));
+  set('re-max-m',  mMax   + ' meses');
+
+  // Plano de acúmulo para meta ideal
+  set('re-p6',  desp > 0 ? fmt(vIdeal / 6)  : 'R$\u00a00');
+  set('re-p12', desp > 0 ? fmt(vIdeal / 12) : 'R$\u00a00');
+  set('re-p24', desp > 0 ? fmt(vIdeal / 24) : 'R$\u00a00');
 }
 
 
